@@ -23,12 +23,24 @@ namespace PlayMemoriesForderRenamer
 			{
 				foreach (var dir in dirs)
 				{
-					if (!Regex.IsMatch(dir.Name, @"\d\d[-.]\d\d[-.]\d\d\d\d.*"))
+					if (!Regex.IsMatch(dir.Name, @"\d+[-.]\d+[-.]\d\d\d\d.*"))
 						continue;
 
-					var m = Regex.Match(dir.Name, @"(\d\d)[-.](\d\d)[-.](\d\d\d\d)(.*)");
+					var m = Regex.Match(dir.Name, @"(\d+)[-.](\d+)[-.](\d\d\d\d)(.*)");
 
-					var newPath = String.Format("{0}.{1}.{2}{3}", m.Groups[3].Value, m.Groups[2].Value, m.Groups[1].Value, m.Groups[4].Value);
+                    string year = m.Groups[3].Value;
+                    string month = m.Groups[1].Value;
+                    string day = m.Groups[2].Value;
+                    string tail = m.Groups[4].Value;
+
+                    if (month.Length == 1)
+                        month = "0" + month;
+
+                    if (day.Length == 1)
+                        day = "0" + day;
+
+
+                    var newPath = string.Format("{0}.{1}.{2}{3}", year, month, day, tail);
 
 					var newDir = new DirectoryInfo(Path.Combine(dir.Parent.FullName, newPath));
 
